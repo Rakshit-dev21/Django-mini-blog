@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }} | My Blog</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+        </nav>
+    </header>
+
+    <main>
+        <article>
+            <h1>{{ post.title }}</h1>
+            <p><strong>By:</strong> {{ post.author }} | <strong>Date:</strong> {{ post.created_at|date:"F d, Y" }}</p>
+
+            <div>
+                {{ post.content|linebreaksbr }}
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 My Blog</p>
+    </footer>
+</body>
+</html>
