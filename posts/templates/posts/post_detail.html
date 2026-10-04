@@ -9,7 +9,9 @@
     <header>
         <nav>
             <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'create_post' %}">Create Post</a>
+            <a href="{% url 'post_create' %}">Create Post</a>
+            <a href="{% url 'post_edit' post.id %}">Edit Post</a>
+            <a href="{% url 'post_delete' post.id %}">Delete Post</a>
         </nav>
     </header>
 

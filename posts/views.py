@@ -19,3 +19,20 @@ def  post_create(request):
     else:
         form = PostForm()
     return render(request, 'posts/post_form.html', {'form': form})
+def post_edit(request, id):
+    post = get_object_or_404(Post, id=id)
+    if request.method == 'POST':
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('post_detail', id=post.id)
+    else:
+        form = PostForm(instance=post)
+    return render(request, 'posts/post_form.html', {'form': form})
+
+def post_delete(request, id):
+    post = get_object_or_404(Post, id=id)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('home')
+    return render(request, 'posts/post_confirm_delete.html', {'post': post})
