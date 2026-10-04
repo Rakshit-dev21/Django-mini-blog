@@ -16,10 +16,15 @@ Including another URLconf
 """
 from django.urls import path
 from . import views
+
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('post/<int:id>/', views.post_detail, name='post_detail'),
-    path('post/new/', views.post_create, name='post_create'),
-    path('post/<int:id>/delete/', views.post_delete, name='post_delete'),
-    path('post/<int:id>/edit/', views.post_edit, name='post_edit'),
-]
+    path("dashboard/", views.home, name="home"),
+    path("post/<int:id>/", views.post_detail, name="post_detail"),
+    path("post/new/", views.post_create, name="create_post"),
+    path("post/<int:id>/edit/", views.post_edit, name="update_post"),
+    path("post/<int:id>/delete/", views.post_delete, name="delete_post"),
+    path("", views.register_view, name="register"),
+    path("login/" , views.login_view , name = "login"),
+    path("logout/" , views.logout_view , name = "logout"),
+    path("all-posts/" , views.all_posts , name = "all_posts"),
+]    

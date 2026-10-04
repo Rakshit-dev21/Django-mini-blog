@@ -1,20 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post Form</title>
-</head>
-<body>
-    
-    <div class="container">
-        <h1>{% if form.instance.pk %}Edit Post{% else %}Create Post{% endif %}</h1>
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Save</button>
-            {% comment %} <a href="{% url 'post_list' %}">Cancel</a> {% endcomment %}
-        </form>
+{% extends 'posts/base.html' %}
+
+{% block title %}{% if form.instance.pk %}Edit Post{% else %}Create Post{% endif %} | My Blog{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card content-card">
+                <div class="card-body p-4 p-md-5">
+                    <h1 class="h3 mb-4">
+                        {% if form.instance.pk %}
+                            <i class="bi bi-pencil-square"></i> Edit Post
+                        {% else %}
+                            <i class="bi bi-plus-circle"></i> Create Post
+                        {% endif %}
+                    </h1>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="{{ form.title.id_for_label }}" class="form-label fw-semibold">Title</label>
+                            {{ form.title }}
+                            {% for error in form.title.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="{{ form.content.id_for_label }}" class="form-label fw-semibold">Content</label>
+                            {{ form.content }}
+                            {% for error in form.content.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg"></i> Save
+                            </button>
+                            <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+{% endblock %}
