@@ -4,7 +4,10 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
 from .forms import PostForm
 from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
-from django.contrib.auth import login , logout
+from django.contrib.auth import logout          # "login" ki jagah
+from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework_simplejwt.tokens import RefreshToken
+from .jwt_auth import REFRESH_COOKIE, clear_jwt_cookies, set_jwt_cookies
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 def register_view(request):
@@ -12,8 +15,7 @@ def register_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request , user)
-            return redirect('home')
+            return set_jwt_cookies(redirect('home'), user)
     else:
         initial_data = {'username': '', 'password1': '', 'password2': ''}
         form = UserCreationForm(initial=initial_data)
@@ -27,8 +29,7 @@ def login_view(request):
         form = AuthenticationForm(request , data = request.POST)
         if(form.is_valid()):
             user = form.get_user()
-            login(request , user)
-            return redirect('home')
+            return set_jwt_cookies(redirect('home'), user)
     else:
         intial_data = {'username': '', 'password': ''}
         form = AuthenticationForm(initial = intial_data)
@@ -78,8 +79,14 @@ def post_delete(request, id):
 
 @login_required(login_url='login')
 def logout_view(request):
+    raw_refresh = request.COOKIES.get(REFRESH_COOKIE)
+    if raw_refresh:
+        try:
+            RefreshToken(raw_refresh).blacklist()
+        except TokenError:
+            pass
     logout(request)
-    return redirect('login')
+    return clear_jwt_cookies(redirect('login'))
 
 @login_required(login_url='login')
 def all_posts(request):
