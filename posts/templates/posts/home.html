@@ -5,9 +5,8 @@
 {% block content %}
     <div class="page-header d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div>
-            <h1 class="h2 mb-1">Welcome, {{ request.user.username }}!</h1>
             <h1 class="h2 mb-1">{{ heading }}</h1>
-            <p class="mb-0 opacity-75">Read, write and manage your posts.</p>
+            <p class="mb-0 opacity-75">Welcome, {{ user.username }}! Read, write and manage your posts.</p>
         </div>
         <a href="{% url 'create_post' %}" class="btn btn-light fw-semibold">
             <i class="bi bi-plus-lg"></i> New Post
